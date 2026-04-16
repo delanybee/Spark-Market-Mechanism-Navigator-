@@ -6,18 +6,18 @@
 <title>Spark Enteric Methane Navigator (Prototype)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   /* ---------- Soft Roadmap Palette ---------- */
   :root {
     --navy: #1F3864;
     --navy-mid: #2E4F8F;
     --navy-soft: #5074B5;
-    --blue-light: #7A9BCC;
-    --blue-pale: #A8C0DC;
-    --blue-whisper: #D5DCE8;
-    --cream: #F7F5F2;
-    --cream-warm: #F0DCD0;
+      --blue-light: #B7C7E6;
+      --blue-pale: #D6E0F5;
+      --blue-whisper: #E9EEF6;
+      --cream: #FAF8F6;
+      --cream-warm: #F6EFE7;
     --peach: #E8A89A;
     --coral: #D87060;
     --rust: #C04830;
@@ -37,13 +37,13 @@
   html, body {
     margin: 0;
     padding: 0;
-    font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     color: var(--ink);
-    background: linear-gradient(180deg, var(--bg) 0%, var(--cream) 100%);
+    background: #FAF8F6;
     background-attachment: fixed;
     line-height: 1.6;
     min-height: 100vh;
-    font-size: 15px;
+    font-size: 16px;
   }
 
   /* ---------- App Layout ---------- */
@@ -150,14 +150,16 @@
   /* ---------- About Panel (hidden by default) ---------- */
   .about-panel {
     display: none;
-    background: var(--cream-warm);
-    border: 1px solid var(--rule-warm);
-    border-radius: 8px;
+    background: linear-gradient(135deg, white 0%, var(--cream) 100%);
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--blue-pale);
+    border-radius: 0 8px 8px 0;
     padding: 16px 24px;
     margin-bottom: 24px;
     font-size: 14px;
     color: var(--ink-soft);
     line-height: 1.6;
+    box-shadow: var(--shadow-soft);
   }
   .about-panel.show { display: block; }
   .about-panel p { margin: 0; }
@@ -172,11 +174,11 @@
 
   /* ---------- Questions Grid Panel ---------- */
   .questions-panel {
-    background: white;
-    border: 1px solid var(--rule);
-    border-radius: 12px;
+    background: linear-gradient(135deg, #F7F9FB 0%, #F0F6FF 100%);
+    border: 1px solid var(--blue-whisper);
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: var(--shadow-soft);
+    box-shadow: 0 2px 16px rgba(31,56,100,0.07);
   }
   .questions-header {
     background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
@@ -190,6 +192,16 @@
     text-transform: uppercase;
     letter-spacing: 1.5px;
     margin: 0;
+  }
+  .questions-subtitle {
+    font-size: 14px;
+    color: rgba(255,255,255,0.75);
+    margin-top: 6px;
+    margin-bottom: 0;
+    font-weight: 400;
+    line-height: 1.7;
+    max-width: 700px;
+    font-family: 'Inter', sans-serif;
   }
   .questions-grid {
     display: grid;
@@ -205,10 +217,11 @@
   }
   
   .question {
-    padding: 20px;
-    border-right: 1px solid var(--rule);
-    border-bottom: 1px solid var(--rule);
-    background: white;
+    padding: 22px 20px 20px 20px;
+    border-right: 1px solid var(--blue-whisper);
+    border-bottom: 1px solid var(--blue-whisper);
+    background: #F9FBFD;
+    transition: background 0.2s;
   }
   .question:last-child { border-right: none; }
   @media (max-width: 900px) {
@@ -241,41 +254,60 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 15px;
-    height: 15px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
-    background: var(--blue-whisper);
-    color: var(--navy-soft);
-    font-size: 9px;
+    background: #E8F0FF;
+    color: #5074B5;
+    font-size: 14px;
     font-weight: 700;
-    cursor: help;
+    cursor: pointer;
     position: relative;
-    transition: all 0.15s;
+    border: 1.5px solid #A8C0DC;
+    box-shadow: 0 1px 4px rgba(80,116,181,0.07);
+    transition: all 0.16s;
   }
-  .help-icon:hover { background: var(--navy-soft); color: white; }
-  .help-icon::after {
-    content: attr(data-help);
-    position: absolute;
-    bottom: calc(100% + 6px);
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--navy);
-    color: white;
-    padding: 10px 14px;
-    border-radius: 8px;
-    font-size: 12px;
+  .help-icon::before {
+    content: "i";
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    display: block;
+    line-height: 1;
+  }
+  .help-icon:hover, .help-icon:focus {
+    background: #5074B5;
+    color: #fff;
+    outline: none;
+    border-color: #5074B5;
+  }
+  .help-icon .popover {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 9999;
+    background: #fff;
+    color: #1F3864;
+    padding: 14px 18px;
+    border-radius: 12px;
+    font-size: 15px;
     font-weight: 400;
-    line-height: 1.5;
-    width: 220px;
-    text-align: left;
-    opacity: 0;
-    visibility: hidden;
-    z-index: 100;
-    box-shadow: 0 4px 20px rgba(31,56,100,0.25);
+    line-height: 1.6;
+    min-width: 220px;
+    max-width: 320px;
+    box-shadow: 0 4px 24px rgba(31,56,100,0.18);
+    border: 1.5px solid #A8C0DC;
     pointer-events: none;
-    transition: opacity 0.15s;
+    opacity: 0;
+    transition: opacity 0.18s;
+    word-break: break-word;
   }
-  .help-icon:hover::after { opacity: 1; visibility: visible; }
+  .help-icon.show-popover .popover {
+    display: block;
+    pointer-events: auto;
+    opacity: 1;
+  }
 
   /* ---------- Options (vertical stack) ---------- */
   .options {
@@ -284,28 +316,30 @@
     gap: 8px;
   }
   .option {
-    padding: 10px 14px;
-    border: 1px solid var(--rule);
-    border-radius: 6px;
-    background: var(--cream);
-    color: var(--ink-soft);
-    font-size: 13px;
+    padding: 12px 16px;
+      border: 1.5px solid var(--blue-pale);
+      border-radius: 8px;
+      background: #F6F8FA;
+      color: var(--navy-mid);
+    font-size: 15px;
     font-weight: 500;
     cursor: pointer;
     text-align: left;
-    transition: all 0.15s ease;
+    transition: all 0.18s cubic-bezier(.4,0,.2,1);
+    box-shadow: 0 1px 2px rgba(31,56,100,0.03);
   }
   .option:hover {
-    border-color: var(--blue-pale);
-    background: var(--blue-whisper);
+    border-color: var(--navy-mid);
+    background: #E9EEF6;
     color: var(--navy);
+    box-shadow: 0 2px 8px rgba(108,123,165,0.08);
   }
   .option.active {
-    background: linear-gradient(135deg, var(--navy-soft) 0%, var(--navy) 100%);
-    color: white;
-    border-color: var(--navy);
-    font-weight: 600;
-    box-shadow: 0 2px 8px rgba(31,56,100,0.2);
+    background: linear-gradient(135deg, #A3B3D6 0%, #6C7BA5 100%);
+    color: #fff;
+    border-color: #A3B3D6;
+    font-weight: 500;
+    box-shadow: 0 4px 16px rgba(108,123,165,0.13);
   }
 
   /* ---------- Results Section ---------- */
@@ -510,6 +544,60 @@
     to { opacity: 1; transform: translateY(0); }
   }
 </style>
+<script>
+// Improved popover logic for help icons
+document.addEventListener('DOMContentLoaded', function() {
+  function positionPopover(icon, popover) {
+    const rect = icon.getBoundingClientRect();
+    const popRect = popover.getBoundingClientRect();
+    let top = rect.bottom + 8;
+    let left = rect.left + (rect.width / 2) - (popRect.width / 2);
+    // Prevent overflow left/right
+    left = Math.max(12, Math.min(left, window.innerWidth - popRect.width - 12));
+    // Prevent overflow bottom
+    if (top + popRect.height > window.innerHeight - 12) {
+      top = rect.top - popRect.height - 8;
+    }
+    popover.style.top = `${top}px`;
+    popover.style.left = `${left}px`;
+  }
+  document.querySelectorAll('.help-icon').forEach(function(icon) {
+    const text = icon.getAttribute('data-help');
+    if (!text) return;
+    const popover = document.createElement('span');
+    popover.className = 'popover';
+    popover.textContent = text;
+    icon.appendChild(popover);
+    function showPopover() {
+      icon.classList.add('show-popover');
+      popover.style.display = 'block';
+      positionPopover(icon, popover);
+      setTimeout(() => { popover.style.opacity = 1; }, 10);
+    }
+    function hidePopover() {
+      icon.classList.remove('show-popover');
+      popover.style.opacity = 0;
+      setTimeout(() => { popover.style.display = 'none'; }, 180);
+    }
+    icon.addEventListener('mouseenter', showPopover);
+    icon.addEventListener('focus', showPopover);
+    icon.addEventListener('mouseleave', hidePopover);
+    icon.addEventListener('blur', hidePopover);
+    // Touch support
+    icon.addEventListener('click', function(e) {
+      if (icon.classList.contains('show-popover')) {
+        hidePopover();
+      } else {
+        showPopover();
+      }
+      e.stopPropagation();
+    });
+    document.body.addEventListener('click', function(e) {
+      if (!icon.contains(e.target)) hidePopover();
+    });
+  });
+});
+</script>
 </head>
 <body>
 
@@ -526,10 +614,7 @@
     </div>
   </header>
 
-  <!-- INFO (always visible) -->
-  <div class="info-panel">
-    <p><strong>The roadmap maps the landscape. This Navigator helps you decide where to act.</strong> Answer a few questions about your funding priorities, and we will surface the interventions the roadmap identifies as highest-leverage for your goals, with reasoning tied back to specific pages.</p>
-  </div>
+  <!-- INFO REMOVED -->
 
   <!-- ABOUT (hidden) -->
   <div class="about-panel" id="aboutPanel">
@@ -541,12 +626,13 @@
     <div class="questions-panel">
       <div class="questions-header">
         <h2>Select Your Priorities</h2>
+        <div class="questions-subtitle">Answer a few questions about your funding priorities, and we will surface the interventions the roadmap identifies as highest-leverage for your goals, with reasoning tied back to specific pages.</div>
       </div>
       <div class="questions-grid">
         <div class="question" data-q="horizon">
           <label class="question-label">
             Time Horizon
-            <span class="help-icon" data-help="Near-term: proven solutions ready for scale. Long-term: R&D and moonshots needing more time.">?</span>
+            <span class="help-icon" data-help="Near-term: proven solutions ready for scale. Long-term: R&D and moonshots needing more time."></span>
           </label>
           <div class="question-sub">When should reductions materialize?</div>
           <div class="options">
@@ -559,7 +645,7 @@
         <div class="question" data-q="risk">
           <label class="question-label">
             Risk Appetite
-            <span class="help-icon" data-help="De-risk: proven tech needing validation. Catalyze: promising but less-proven. Moonshots: high-risk, high-reward.">?</span>
+            <span class="help-icon" data-help="De-risk: proven tech needing validation. Catalyze: promising but less-proven. Moonshots: high-risk, high-reward."></span>
           </label>
           <div class="question-sub">How much uncertainty is acceptable?</div>
           <div class="options">
@@ -572,7 +658,7 @@
         <div class="question" data-q="pillar">
           <label class="question-label">
             Intervention Type
-            <span class="help-icon" data-help="The roadmap's four pillars: Innovation, Market-shaping, Public trust, Policy. Measurement cuts across all.">?</span>
+            <span class="help-icon" data-help="The roadmap's four pillars: Innovation, Market-shaping, Public trust, Policy. Measurement cuts across all."></span>
           </label>
           <div class="question-sub">Which roadmap pillar fits?</div>
           <div class="options">
@@ -588,7 +674,7 @@
         <div class="question" data-q="system">
           <label class="question-label">
             Production System
-            <span class="help-icon" data-help="~75% of emissions come from pasture-based systems, but most solutions target confined operations.">?</span>
+            <span class="help-icon" data-help="~75% of emissions come from pasture-based systems, but most solutions target confined operations."></span>
           </label>
           <div class="question-sub">Which systems to target?</div>
           <div class="options">
@@ -601,7 +687,7 @@
         <div class="question" data-q="geo">
           <label class="question-label">
             Geography
-            <span class="help-icon" data-help="HIC: developed regulatory pathways. LMIC: larger cattle populations, different infrastructure.">?</span>
+            <span class="help-icon" data-help="HIC: developed regulatory pathways. LMIC: larger cattle populations, different infrastructure."></span>
           </label>
           <div class="question-sub">Where should impact occur?</div>
           <div class="options">
