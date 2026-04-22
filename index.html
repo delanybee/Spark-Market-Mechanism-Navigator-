@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Spark Enteric Methane Navigator (Prototype)</title>
+<title>Spark Enteric Methane Navigator (2025)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@400;600;700&display=swap" rel="stylesheet">
@@ -538,6 +538,159 @@
     color: var(--muted);
     margin: 0;
   }
+  .footer a {
+    color: var(--navy-soft);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .footer a:hover { text-decoration: underline; }
+
+  /* ---------- Spark Intro Panel ---------- */
+  .spark-panel {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin-bottom: 28px;
+    box-shadow: 0 4px 20px rgba(31,56,100,0.15);
+  }
+  .spark-panel-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .spark-panel-text { flex: 1; min-width: 260px; }
+  .spark-panel-title {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: white;
+    margin: 0 0 8px;
+  }
+  .spark-panel-text p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.82);
+    margin: 0 0 10px;
+    line-height: 1.7;
+  }
+  .spark-panel-text strong { color: white; }
+  .spark-partners {
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    margin: 12px 0 0;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    padding-top: 10px;
+  }
+  .spark-partners strong { color: rgba(255,255,255,0.75); font-weight: 600; }
+  .roadmap-link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--peach);
+    text-decoration: none;
+    border: 1px solid rgba(232,168,154,0.4);
+    border-radius: 6px;
+    padding: 7px 16px;
+    transition: all 0.15s;
+    background: rgba(255,255,255,0.06);
+  }
+  .roadmap-link-btn:hover {
+    background: rgba(255,255,255,0.12);
+    color: white;
+    border-color: rgba(255,255,255,0.3);
+  }
+  .spark-stats {
+    display: flex;
+    gap: 20px;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    padding-top: 4px;
+  }
+  .spark-stat { text-align: center; min-width: 80px; }
+  .spark-stat-number {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--peach);
+    line-height: 1.1;
+    display: block;
+  }
+  .spark-stat-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.62);
+    line-height: 1.45;
+    margin-top: 5px;
+    display: block;
+  }
+
+  /* ---------- CTA Section ---------- */
+  .cta-section {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-top: 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    box-shadow: 0 4px 20px rgba(31,56,100,0.13);
+  }
+  .cta-text h3 {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+    margin: 0 0 6px;
+  }
+  .cta-text p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.75);
+    margin: 0;
+    line-height: 1.6;
+  }
+  .cta-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+  }
+  .cta-btn-primary {
+    padding: 10px 22px;
+    background: var(--coral);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.15s;
+    display: inline-block;
+    white-space: nowrap;
+  }
+  .cta-btn-primary:hover { background: var(--rust); }
+  .cta-btn-secondary {
+    padding: 10px 20px;
+    background: rgba(255,255,255,0.10);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.15s;
+    display: inline-block;
+    white-space: nowrap;
+    font-family: inherit;
+  }
+  .cta-btn-secondary:hover { background: rgba(255,255,255,0.18); }
 
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(4px); }
@@ -605,8 +758,8 @@ document.addEventListener('DOMContentLoaded', function() {
   <!-- HEADER -->
   <header class="header">
     <div class="header-left">
-      <h1>Enteric Methane Navigator</h1>
-      <span class="header-badge">Prototype</span>
+      <h1>Spark Enteric Methane Navigator</h1>
+      <span class="header-badge">2025 Edition</span>
     </div>
     <div class="header-right">
       <button class="about-toggle" id="aboutToggle">About This Prototype</button>
@@ -614,11 +767,35 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
   </header>
 
-  <!-- INFO REMOVED -->
+  <!-- SPARK INTRO PANEL -->
+  <div class="spark-panel">
+    <div class="spark-panel-inner">
+      <div class="spark-panel-text">
+        <p class="spark-panel-title">Spark Climate Solutions &middot; Livestock Enteric Methane Roadmap (2025)</p>
+        <p>Enteric methane from livestock accounts for roughly <strong>5% of global greenhouse gas emissions</strong> &mdash; yet receives only <strong>~2% of agricultural climate R&amp;D funding</strong>. Methane&rsquo;s 80&times; short-term warming power means near-term reductions deliver outsized climate benefit. This tool distills Spark&rsquo;s 2025 Roadmap to help funders identify the highest-leverage entry points.</p>
+        <p class="spark-partners"><strong>Spark works in partnership with:</strong> The Nature Conservancy &middot; Market Shaping Accelerator &middot; Global Methane Hub &middot; CGIAR</p>
+        <a class="roadmap-link-btn" href="https://sparkclimatecollaborative.org" target="_blank" rel="noopener">&nearr; View the full Roadmap</a>
+      </div>
+      <div class="spark-stats">
+        <div class="spark-stat">
+          <span class="spark-stat-number">~5%</span>
+          <span class="spark-stat-label">of global GHG emissions from enteric methane</span>
+        </div>
+        <div class="spark-stat">
+          <span class="spark-stat-number">80&times;</span>
+          <span class="spark-stat-label">more warming than CO&#x2082; over 20 years</span>
+        </div>
+        <div class="spark-stat">
+          <span class="spark-stat-number">~2%</span>
+          <span class="spark-stat-label">of ag climate R&amp;D goes to this problem</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- ABOUT (hidden) -->
   <div class="about-panel" id="aboutPanel">
-    <p>Prototype made by Delaney Broome, UC Berkeley Master of Climate Change Solutions, for Spark Climate Solutions · Based on the Livestock Enteric Methane Mitigation Roadmap (2025)</p>
+    <p>Prototype made by Delany Broome, UC Berkeley Master of Climate Change Solutions, for Spark Climate Solutions · Based on the Livestock Enteric Methane Mitigation Roadmap (2025)</p>
   </div>
 
   <main class="main">
@@ -709,10 +886,23 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="results-empty">Select options above to see recommendations</div>
       </div>
     </div>
+
+    <!-- CTA -->
+    <div class="cta-section" id="ctaSection" style="display:none;">
+      <div class="cta-text">
+        <h3>Want to explore funding this area?</h3>
+        <p>Spark convenes funders, researchers, and industry actors working on enteric methane. Get in touch to explore co-funding opportunities, portfolio gaps, or grantee introductions.</p>
+      </div>
+      <div class="cta-buttons">
+        <a class="cta-btn-primary" href="https://sparkclimatecollaborative.org/contact" target="_blank" rel="noopener">Get in touch with Spark</a>
+        <a class="cta-btn-secondary" href="https://sparkclimatecollaborative.org" target="_blank" rel="noopener">Download the Roadmap</a>
+        <button class="cta-btn-secondary" id="copyResultsBtn" onclick="copyResults()">Copy results</button>
+      </div>
+    </div>
   </main>
 
   <footer class="footer">
-    <p>Spark Climate Solutions · Based on the Livestock Enteric Methane Mitigation Roadmap (2025)</p>
+    <p><a href="https://sparkclimatecollaborative.org" target="_blank" rel="noopener">Spark Climate Solutions</a> &middot; Based on the <a href="https://sparkclimatecollaborative.org" target="_blank" rel="noopener">Livestock Enteric Methane Mitigation Roadmap (2025)</a></p>
   </footer>
 </div>
 
@@ -885,7 +1075,7 @@ function getRecommendations() {
   const scored = interventions.map(i => ({ ...i, score: scoreIntervention(i) }));
   scored.sort((a, b) => b.score - a.score);
   // Return top 3 with score >= 0.5 (i.e. some real match)
-  return scored.filter(s => s.score >= 0.5).slice(0, 3);
+  return scored.filter(s => s.score >= 0.5);
 }
 
 /* =========================================================
@@ -900,10 +1090,11 @@ function renderResults() {
   if (recs.length === 0) {
     container.innerHTML = '<div class="results-empty">Select options above to see recommendations</div>';
     countEl.textContent = '';
+    document.getElementById('ctaSection').style.display = 'none';
     return;
   }
 
-  countEl.textContent = recs.length + ' of ' + interventions.length + ' match';
+  countEl.textContent = recs.length + ' of ' + interventions.length + ' interventions matched';
 
   const cards = recs.map((r, i) => `
     <div class="rec-card rank-${i+1}">
@@ -925,7 +1116,8 @@ function renderResults() {
   `).join('');
 
   container.innerHTML = '<div class="results-grid">' + cards + '</div>';
-  
+  document.getElementById('ctaSection').style.display = 'flex';
+
   // Wire up expand/collapse toggles
   container.querySelectorAll('.rec-toggle').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -964,6 +1156,20 @@ document.getElementById('resetBtn').addEventListener('click', () => {
   document.querySelectorAll('.option.active').forEach(b => b.classList.remove('active'));
   renderResults();
 });
+
+function copyResults() {
+  const recs = getRecommendations();
+  if (!recs.length) return;
+  const text = recs.map((r, i) =>
+    `${i+1}. ${r.title}\n   Pillar: ${r.pillar}\n   ${r.reasoning}\n   ${r.citations}`
+  ).join('\n\n');
+  const btn = document.getElementById('copyResultsBtn');
+  navigator.clipboard.writeText('Spark Enteric Methane Navigator — Matched Interventions\n\n' + text)
+    .then(() => {
+      btn.textContent = 'Copied!';
+      setTimeout(() => { btn.textContent = 'Copy results'; }, 2000);
+    });
+}
 
 // About panel toggle
 document.getElementById('aboutToggle').addEventListener('click', () => {
