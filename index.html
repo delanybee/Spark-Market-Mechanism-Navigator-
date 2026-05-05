@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Spark Enteric Methane Navigator (2025)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ---------- Case Study Design Tokens ---------- */
+  :root {
+    --bg: #FAFAF8;
+    --bg-alt: #F4F1EB;
+    --ink: #0D1117;
+    --ink-soft: #2A2720;
+    --muted: #8A8278;
+    --border: #E4E2DC;
+    --rule: #D8D4CB;
+    --accent: #B8620A;
+    --accent-deep: #7A3D04;
+    --teal: #5C7A4E;
+    --serif-display: 'Fraunces', Georgia, serif;
+    --serif-body: 'Newsreader', Georgia, serif;
+    --mono: 'JetBrains Mono', 'Courier New', monospace;
+    --col-narrow: 38rem;
+    --col-wide: 64rem;
+
+    /* Legacy variable compatibility */
+    --navy: var(--ink);
+    --navy-mid: var(--ink-soft);
+    --navy-soft: var(--accent);
+    --blue-light: var(--border);
+    --blue-pale: var(--bg-alt);
+    --blue-whisper: var(--bg-alt);
+    --cream: var(--bg);
+    --cream-warm: var(--bg-alt);
+    --peach: var(--accent);
+    --coral: var(--accent);
+    --rust: var(--accent-deep);
+    --rule-warm: var(--rule);
+    --panel: var(--bg);
+    --caption: var(--muted);
+    --shadow-soft: 0 1px 3px rgba(13,17,23,0.04), 0 4px 16px rgba(13,17,23,0.06);
+    --shadow-warm: 0 2px 8px rgba(184,98,10,0.08), 0 8px 24px rgba(13,17,23,0.06);
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--serif-body);
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.65;
+    min-height: 100vh;
+    font-size: 1.0625rem;
+    font-feature-settings: "ss01","ss02","kern";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* ---------- App Layout ---------- */
+  .app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  /* ---------- Header ---------- */
+  .header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 24px 0 20px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 28px;
+  }
+  .header-left {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+  .header h1 {
+    font-family: var(--serif-display);
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0;
+    letter-spacing: -0.3px;
+  }
+  .header-badge {
+    font-size: 9px;
+    font-weight: 700;
+    color: white;
+    background: linear-gradient(135deg, var(--coral) 0%, var(--rust) 100%);
+    padding: 4px 10px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .about-toggle {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 0;
+    font-weight: 500;
+    text-decoration: none;
+    border-bottom: 1px dashed var(--border);
+    transition: all 0.15s;
+  }
+  .about-toggle:hover { 
+    color: var(--navy); 
+    border-bottom-color: var(--navy);
+  }
+  .reset-btn {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 6px 14px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+    transition: all 0.15s;
+  }
+  .reset-btn:hover { 
+    border-color: var(--accent); 
+    color: var(--accent);
+    background: var(--bg);
+  }
+
+  /* ---------- Info Panel (always visible) ---------- */
+  .info-panel {
+    background: linear-gradient(135deg, white 0%, var(--cream) 100%);
+    border: 1px solid var(--rule-warm);
+    border-left: 4px solid var(--blue-pale);
+    border-radius: 0 8px 8px 0;
+    padding: 18px 24px;
+    margin-bottom: 24px;
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    box-shadow: var(--shadow-soft);
+  }
+  .info-panel p { margin: 0; }
+  .info-panel strong { color: var(--navy); }
+
+  /* ---------- About Panel (hidden by default) ---------- */
+  .about-panel {
+    display: none;
+    background: linear-gradient(135deg, white 0%, var(--cream) 100%);
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--blue-pale);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 24px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    box-shadow: var(--shadow-soft);
+  }
+  .about-panel.show { display: block; }
+  .about-panel p { margin: 0; }
+
+  /* ---------- Navigator Shell ---------- */
+  .navigator-shell {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 40px;
+    align-items: start;
+    margin-bottom: 0;
+  }
+  @media (max-width: 768px) {
+    .navigator-shell { grid-template-columns: 1fr; gap: 28px; }
+  }
+
+  /* ---------- Filters Sidebar ---------- */
+  .filters {
+    position: sticky;
+    top: 24px;
+    align-self: start;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+  }
+  .filters-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .filters-header h2 {
+    margin: 0;
+  }
+  .question {
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .question:last-child {
+    border-bottom: none;
+  }
+  .filter-group > label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-weight: 500;
+    font-size: 0.8125rem;
+    color: var(--ink);
+  }
+  .filter-help {
+    margin: 3px 0 10px;
+    font-family: var(--serif-body);
+    font-size: 1.0625rem;
+    color: var(--ink-soft);
+    line-height: 1.65;
+  }
+  .pill-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .option-pill {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    border: 1px solid var(--border);
+    border-radius: 40px;
+    padding: 0.5rem 1rem;
+    color: var(--ink-soft);
+    background: var(--bg);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .option-pill:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .option-pill.is-selected {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+
+  /* ---------- Results Column ---------- */
+  .results-col {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  /* ---------- Help Icon ---------- */
+  .help-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--bg-alt);
+    color: var(--accent);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    position: relative;
+    border: 1px solid var(--border);
+    transition: all 0.16s;
+  }
+  .help-icon::before {
+    content: "i";
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    display: block;
+    line-height: 1;
+  }
+  .help-icon:hover, .help-icon:focus {
+    background: var(--accent);
+    color: #fff;
+    outline: none;
+    border-color: var(--accent);
+  }
+  .help-icon .popover {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 9999;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--serif-body);
+    padding: 14px 18px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 400;
+    line-height: 1.6;
+    min-width: 220px;
+    max-width: 320px;
+    box-shadow: var(--shadow-soft);
+    border: 1px solid var(--border);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.18s;
+    word-break: break-word;
+  }
+  .help-icon.show-popover .popover {
+    display: block;
+    pointer-events: auto;
+    opacity: 1;
+  }
+
+  /* ---------- Results Section ---------- */
+  .results-section {
+    flex: 1;
+  }
+  .results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .results-header h2 {
+    margin: 0;
+  }
+  .results-count {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  .results-empty {
+    text-align: center;
+    padding: 48px 24px;
+    font-family: var(--serif-body);
+    font-style: italic;
+    color: var(--muted);
+    font-size: 1.0625rem;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  @media (max-width: 600px) {
+    .navigator-shell { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- Recommendation Cards ---------- */
+  .intervention-card {
+    background: var(--bg-alt);
+    border-left: 3px solid var(--accent);
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 1rem;
+  }
+  .intervention-card h4 {
+    font-family: var(--serif-display);
+    font-weight: 500;
+    font-variation-settings: "opsz" 36, "SOFT" 30;
+    font-size: 1.1rem;
+    color: var(--ink);
+    margin: 0 0 0.5rem;
+  }
+  .intervention-card p {
+    font-family: var(--serif-body);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin-bottom: 0.75rem;
+  }
+  .intervention-card .meta {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .intervention-card .card-toggle {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    text-transform: uppercase;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-top: 0.5rem;
+    font-weight: 500;
+    transition: color 0.15s;
+    display: block;
+  }
+  .intervention-card .card-toggle:hover { color: var(--accent-deep); }
+  .card-details {
+    display: none;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule);
+  }
+  .card-details.show { display: block; }
+  .card-details-label {
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin: 1rem 0 0.5rem;
+  }
+  .card-details-label:first-child { margin-top: 0; }
+  .card-projects {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .card-projects li {
+    font-family: var(--serif-body);
+    font-size: 0.9rem;
+    padding: 0.35rem 0 0.35rem 1.25rem;
+    position: relative;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  .card-projects li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+  .card-citation {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-top: 0.75rem;
+    letter-spacing: 0.06em;
+  }
+
+  /* ---------- Footer ---------- */
+  .site-footer {
+    border-top: 1px solid var(--rule);
+    padding: 3rem 1.5rem;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-top: 4rem;
+  }
+  .footer-inner {
+    max-width: var(--col-narrow);
+    margin: 0 auto;
+  }
+  .footer-credit {
+    color: var(--ink-soft);
+    font-family: var(--serif-body);
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+  }
+  .footer-rule {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 1.5rem 0;
+  }
+  .site-footer a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .site-footer a:hover { text-decoration: underline; }
+
+  /* ---------- Stat Row ---------- */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    padding: 2rem 0;
+    margin: 1.5rem 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .stat-num {
+    font-family: var(--serif-display);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 300;
+    font-variation-settings: "opsz" 144, "SOFT" 30;
+    line-height: 0.95;
+    color: var(--ink);
+    letter-spacing: -0.03em;
+    margin-bottom: 0.4rem;
+    display: block;
+  }
+  .stat-num .unit {
+    font-size: 0.55em;
+    color: var(--accent);
+    font-weight: 400;
+    margin-left: 0.1em;
+  }
+  .stat-label {
+    font-family: var(--serif-body);
+    font-size: 0.85rem;
+    line-height: 1.45;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+
+  /* ---------- Question Kicker ---------- */
+  .question-kicker {
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .question-prompt {
+    font-family: var(--serif-display);
+    font-size: 1.5rem;
+    font-weight: 420;
+    font-variation-settings: "opsz" 72, "SOFT" 30;
+    color: var(--ink);
+    margin: 0 0 1rem;
+    line-height: 1.2;
+  }
+
+  /* ---------- CTA Section ---------- */
+  .section-closer {
+    margin-top: 4rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--rule);
+  }
+  .section-closer h3 {
+    font-family: var(--serif-display);
+    font-size: 1.5rem;
+    font-weight: 420;
+    font-variation-settings: "opsz" 72, "SOFT" 30;
+    color: var(--ink);
+    margin-bottom: 0.75rem;
+  }
+  .section-closer p {
+    font-family: var(--serif-body);
+    color: var(--ink-soft);
+    margin-bottom: 1.5rem;
+    max-width: 52ch;
+  }
+  .cta-primary {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    background: var(--accent);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    text-decoration: none;
+    margin-right: 0.75rem;
+    margin-bottom: 0.5rem;
+    transition: background 0.15s;
+    border: none;
+    cursor: pointer;
+  }
+  .cta-primary:hover { background: var(--accent-deep); }
+  .cta-secondary {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding: 0.75rem 1.5rem;
+    text-decoration: none;
+    border: 1px solid var(--accent);
+    transition: all 0.15s;
+    background: none;
+    cursor: pointer;
+    margin-bottom: 0.5rem;
+  }
+  .cta-secondary:hover {
+    background: var(--accent);
+    color: white;
+  }
+  .cta-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    padding: 28px 0 24px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 28px;
+  }
+  .hero h1 {
+    font-family: var(--serif-display);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1.02;
+    font-weight: 380;
+    font-variation-settings: "opsz" 144, "SOFT" 30;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    max-width: 22ch;
+    margin-bottom: 1.5rem;
+    display: block;
+  }
+  .hero h1 em {
+    font-style: italic;
+    font-variation-settings: "opsz" 144, "SOFT" 100;
+    color: var(--accent);
+  }
+  .prototype-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    margin-left: 12px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background: var(--bg-alt);
+    color: var(--muted);
+    border-radius: 999px;
+    vertical-align: middle;
+    font-family: var(--mono);
+  }
+  .tagline {
+    font-family: var(--serif-body);
+    font-size: 1rem;
+    color: var(--ink-soft);
+    margin: 0 0 12px;
+    line-height: 1.65;
+  }
+  .roadmap-link {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--border);
+    transition: all 0.15s;
+    display: inline-block;
+  }
+  .roadmap-link:hover {
+    color: var(--accent-deep);
+    border-bottom-color: var(--accent-deep);
+  }
+  .methodology-note {
+    max-width: 640px;
+    margin: 20px 0 0;
+    padding-left: 16px;
+    border-left: 2px solid var(--rule);
+    font-family: var(--serif-body);
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .methodology-note summary {
+    cursor: pointer;
+    font-family: var(--mono);
+    font-weight: 500;
+    color: var(--ink-soft);
+    list-style: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    user-select: none;
+  }
+  .methodology-note summary::-webkit-details-marker { display: none; }
+  .methodology-note summary::before {
+    content: "+";
+    display: inline-block;
+    width: 16px;
+    font-size: 1.1rem;
+    font-weight: 400;
+    text-align: center;
+    transition: transform 0.2s;
+  }
+  .methodology-note[open] summary::before {
+    content: "-";
+  }
+  .methodology-note p {
+    margin-top: 12px;
+    line-height: 1.6;
+  }
+
+  /* ---------- Phase 2: Typographic Patterns ---------- */
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    display: block;
+  }
+
+  .hero-dek {
+    font-family: var(--serif-display);
+    font-variation-settings: "opsz" 24, "SOFT" 100;
+    font-size: clamp(1.1rem, 1.6vw, 1.3rem);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--ink-soft);
+    max-width: 52ch;
+    line-height: 1.5;
+    margin: 0 0 12px;
+  }
+
+  h2 {
+    font-family: var(--serif-display);
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 420;
+    font-variation-settings: "opsz" 72, "SOFT" 30;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin: 3rem 0 1.5rem;
+  }
+
+  .section-kicker {
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+</style>
+<script>
+// Improved popover logic for help icons
+document.addEventListener('DOMContentLoaded', function() {
+  function positionPopover(icon, popover) {
+    const rect = icon.getBoundingClientRect();
+    const popRect = popover.getBoundingClientRect();
+    let top = rect.bottom + 8;
+    let left = rect.left + (rect.width / 2) - (popRect.width / 2);
+    // Prevent overflow left/right
+    left = Math.max(12, Math.min(left, window.innerWidth - popRect.width - 12));
+    // Prevent overflow bottom
+    if (top + popRect.height > window.innerHeight - 12) {
+      top = rect.top - popRect.height - 8;
+    }
+    popover.style.top = `${top}px`;
+    popover.style.left = `${left}px`;
+  }
+  document.querySelectorAll('.help-icon').forEach(function(icon) {
+    const text = icon.getAttribute('data-help');
+    if (!text) return;
+    const popover = document.createElement('span');
+    popover.className = 'popover';
+    popover.textContent = text;
+    icon.appendChild(popover);
+    function showPopover() {
+      icon.classList.add('show-popover');
+      popover.style.display = 'block';
+      positionPopover(icon, popover);
+      setTimeout(() => { popover.style.opacity = 1; }, 10);
+    }
+    function hidePopover() {
+      icon.classList.remove('show-popover');
+      popover.style.opacity = 0;
+      setTimeout(() => { popover.style.display = 'none'; }, 180);
+    }
+    icon.addEventListener('mouseenter', showPopover);
+    icon.addEventListener('focus', showPopover);
+    icon.addEventListener('mouseleave', hidePopover);
+    icon.addEventListener('blur', hidePopover);
+    // Touch support
+    icon.addEventListener('click', function(e) {
+      if (icon.classList.contains('show-popover')) {
+        hidePopover();
+      } else {
+        showPopover();
+      }
+      e.stopPropagation();
+    });
+    document.body.addEventListener('click', function(e) {
+      if (!icon.contains(e.target)) hidePopover();
+    });
+  });
+});
+</script>
+</head>
+<body>
+
+<div class="app">
+  <!-- HEADER -->
+  <header class="hero">
+    <span class="eyebrow">Spark Enteric Methane Roadmap, 2025</span>
+    <h1>
+      Spark Enteric Methane <em>Navigator</em>
+      <span class="prototype-badge">v0.1 Prototype</span>
+    </h1>
+    <p class="hero-dek">
+      A decision aid for funders navigating Spark's 2025 Livestock Enteric Methane Roadmap.
+    </p>
+    <a href="https://sparkclimatecollaborative.org" class="roadmap-link" target="_blank" rel="noopener">
+      View the full Roadmap ↗
+    </a>
+    <details class="methodology-note">
+      <summary>How this works</summary>
+      <p>
+        We mapped interventions from the 2025 Roadmap against five funder dimensions: time horizon, risk appetite, intervention type, production system, and geography. Your selections surface the matches the Roadmap identifies as highest-leverage, with each recommendation linked back to the source page.
+      </p>
+    </details>
+  </header>
+
+  <div class="stat-row">
+    <div>
+      <span class="stat-num">5<span class="unit">%</span></span>
+      <span class="stat-label">of global greenhouse gas emissions from livestock enteric fermentation</span>
+    </div>
+    <div>
+      <span class="stat-num">80<span class="unit">x</span></span>
+      <span class="stat-label">more warming power than CO2 over 20 years</span>
+    </div>
+    <div>
+      <span class="stat-num">2<span class="unit">%</span></span>
+      <span class="stat-label">of agricultural climate R&amp;D funding goes to enteric methane</span>
+    </div>
+  </div>
+
+  <section class="navigator-shell">
+
+    <!-- LEFT: FILTERS -->
+    <aside class="filters">
+      <div class="filters-header">
+        <div>
+          <span class="section-kicker">I / Select your priorities</span>
+          <h2>Select your priorities</h2>
+        </div>
+        <button class="reset-btn" id="resetBtn">Clear all</button>
+      </div>
+
+      <div class="question">
+        <span class="question-kicker">01 / Time Horizon <span class="help-icon" data-help="Near-term: proven solutions ready for scale. Long-term: R&D and moonshots needing more time."></span></span>
+        <h3 class="question-prompt">When should reductions materialize?</h3>
+        <div class="pill-group" data-q="horizon">
+          <button class="option-pill" data-value="near">Near-term (by 2030)</button>
+          <button class="option-pill" data-value="long">Long-term (2030+)</button>
+          <button class="option-pill" data-value="agnostic">Agnostic</button>
+        </div>
+      </div>
+
+      <div class="question">
+        <span class="question-kicker">02 / Risk Appetite <span class="help-icon" data-help="De-risk: proven tech needing validation. Catalyze: promising but less-proven. Moonshots: high-risk, high-reward."></span></span>
+        <h3 class="question-prompt">How much uncertainty is acceptable?</h3>
+        <div class="pill-group" data-q="risk">
+          <button class="option-pill" data-value="derisk">De-risk existing</button>
+          <button class="option-pill" data-value="catalyze">Catalyze emerging</button>
+          <button class="option-pill" data-value="moonshot">Moonshots</button>
+        </div>
+      </div>
+
+      <div class="question">
+        <span class="question-kicker">03 / Intervention Type <span class="help-icon" data-help="The roadmap's four pillars: Innovation, Market-shaping, Public trust, Policy. Measurement cuts across all."></span></span>
+        <h3 class="question-prompt">Which roadmap pillar fits?</h3>
+        <div class="pill-group" data-q="pillar">
+          <button class="option-pill" data-value="innovate">Innovation / R&amp;D</button>
+          <button class="option-pill" data-value="incentivize">Market-shaping</button>
+          <button class="option-pill" data-value="trust">Public trust</button>
+          <button class="option-pill" data-value="policy">Policy</button>
+          <button class="option-pill" data-value="measurement">Measurement</button>
+          <button class="option-pill" data-value="any">No preference</button>
+        </div>
+      </div>
+
+      <div class="question">
+        <span class="question-kicker">04 / Production System <span class="help-icon" data-help="~75% of emissions come from pasture-based systems, but most solutions target confined operations."></span></span>
+        <h3 class="question-prompt">Which systems to target?</h3>
+        <div class="pill-group" data-q="system">
+          <button class="option-pill" data-value="pasture">Pasture-based</button>
+          <button class="option-pill" data-value="confined">Confined</button>
+          <button class="option-pill" data-value="both">Both</button>
+        </div>
+      </div>
+
+      <div class="question">
+        <span class="question-kicker">05 / Geography <span class="help-icon" data-help="HIC: developed regulatory pathways. LMIC: larger cattle populations, different infrastructure."></span></span>
+        <h3 class="question-prompt">Where should impact occur?</h3>
+        <div class="pill-group" data-q="geo">
+          <button class="option-pill" data-value="hic">High-income</button>
+          <button class="option-pill" data-value="lmic">Low/Middle-income</button>
+          <button class="option-pill" data-value="global">Global</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- RIGHT: RESULTS -->
+    <div class="results-col">
+      <div class="results-header">
+        <div>
+          <span class="section-kicker">II / Recommended interventions</span>
+          <h2>Recommended Interventions</h2>
+        </div>
+        <span class="results-count" id="resultsCount"></span>
+      </div>
+      <div id="resultsContainer">
+        <div class="results-empty">Select a filter to see matched interventions</div>
+      </div>
+
+      <!-- CTA -->
+      <div class="section-closer" id="ctaSection" style="display:none;">
+        <h3>Want to explore funding this area?</h3>
+        <p>Spark convenes funders, researchers, and industry actors working on enteric methane. Get in touch to explore co-funding opportunities, portfolio gaps, or grantee introductions.</p>
+        <div class="cta-buttons">
+          <a class="cta-primary" href="https://sparkclimatecollaborative.org/contact" target="_blank" rel="noopener">Get in touch with Spark</a>
+          <a class="cta-secondary" href="https://sparkclimatecollaborative.org" target="_blank" rel="noopener">Download the Roadmap</a>
+          <button class="cta-secondary" id="copyResultsBtn" onclick="copyResults()">Copy results</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p class="footer-credit">Designed and built by Delany Broome</p>
+      <p>UC Berkeley, Master of Climate Solutions 2026 · In collaboration with <a href="https://sparkclimatecollaborative.org" target="_blank" rel="noopener">Spark Climate Solutions</a></p>
+      <hr class="footer-rule">
+      <p>Based on Spark Climate Solutions, Livestock Enteric Methane Mitigation Roadmap, 2025</p>
+    </div>
+  </footer>
+</div>
+
+<script>
+/* =========================================================
+   THE INTERVENTION LIBRARY
+   Each intervention is a recommendation the tool can return.
+   Tags drive matching against funder answers.
+   Citations link back to specific roadmap pages.
+   ========================================================= */
+const interventions = [
+  {
+    id: "pasture-delivery",
+    title: "Fund pasture-based delivery system R&D for feed additives",
+    pillar: "Innovate",
+    reasoning: "Feed additives are the most-developed mitigation category, but most score only 'Moderate' on pasture applicability. Without delivery innovation (boluses, slow-release formulations, lick blocks), the science cannot reach the systems where approximately 75% of emissions actually come from. The roadmap names this as a top need across multiple feed additive assessments.",
+    projects: [
+      "Develop and test slow-release boluses, blocks, and alternative delivery mechanisms for 3-NOP and haloform-based inhibitors",
+      "Evaluate performance of pasture delivery in commercial farm conditions (not just controlled trials)",
+      "Conduct economic feasibility assessment of pasture-based delivery costs vs. carbon credit revenue"
+    ],
+    citations: "Roadmap pp. 22, 33-36, 61",
+    tags: { horizon:["near","agnostic"], risk:["derisk","catalyze"], pillar:["innovate","any"], system:["pasture","both"], geo:["any"] }
+  },
+  {
+    id: "amc-pasture",
+    title: "Support market-shaping tools (AMC, prizes) targeted at pasture-applicable solutions",
+    pillar: "Incentivize",
+    reasoning: "Most capital flows to confined systems (approximately 10% of emissions) because market access is easier. Market-shaping tools like AMCs and prize competitions can redirect investment toward pasture-applicable innovations by guaranteeing demand where commercial signals are weakest. Spark is already exploring this approach in partnership with TNC, the Market Shaping Accelerator, and the Global Methane Hub.",
+    projects: [
+      "Co-fund design and capitalization of an AMC structured around pasture-system applicability criteria",
+      "Sponsor or co-design prize competitions targeting low-resource and smallholder context delivery",
+      "Underwrite supply-chain insetting pilots that create early demand signals"
+    ],
+    citations: "Roadmap pp. 24-25",
+    tags: { horizon:["near","long","agnostic"], risk:["derisk","catalyze"], pillar:["incentivize","any"], system:["pasture","both"], geo:["any"] }
+  },
+  {
+    id: "measurement",
+    title: "Invest in affordable, scalable methane measurement infrastructure",
+    pillar: "Innovate (cross-cutting)",
+    reasoning: "The roadmap identifies measurement as a binding bottleneck. Existing reliable tools (respiration chambers, GreenFeed at approximately $100K per unit) are limited to a small number of research institutions, constraining trial sample sizes and slowing every other intervention. Affordable on-farm tools would also unlock carbon markets by providing credible emissions data.",
+    projects: [
+      "Fund development of low-cost individual-animal measurement tools suitable for grazing systems",
+      "Support standardized measurement protocols across research institutions internationally",
+      "Validate proxies (milk MIR spectra, behavioral metrics) against gold-standard methods"
+    ],
+    citations: "Roadmap pp. 53-54",
+    tags: { horizon:["near","long","agnostic"], risk:["derisk","catalyze","moonshot"], pillar:["measurement","innovate","any"], system:["pasture","confined","both"], geo:["any"] }
+  },
+  {
+    id: "genetic-infrastructure",
+    title: "Build global reference populations for genetic selection",
+    pillar: "Innovate",
+    reasoning: "Genetic selection offers cumulative, permanent approximately 1% annual methane reductions, potentially 20-30% by 2050. Unlike feed additives, the effect persists without ongoing intervention, making it durable across systems. The bottleneck is large-scale phenotyping and standardized methane measurement protocols, not the underlying science.",
+    projects: [
+      "Fund large-scale reference populations across major ruminant breeds and production systems",
+      "Validate indirect predictors (milk MIR spectra) to reduce genotyping costs",
+      "Define economic values for methane reduction traits in multi-trait selection indices"
+    ],
+    citations: "Roadmap pp. 47-48",
+    tags: { horizon:["long","agnostic"], risk:["catalyze","derisk"], pillar:["innovate","any"], system:["pasture","confined","both"], geo:["any"] }
+  },
+  {
+    id: "vaccine-rd",
+    title: "Fund early-stage vaccine R&D",
+    pillar: "Innovate",
+    reasoning: "If successful, methane vaccines could deliver a single-dose approximately 30% reduction with broad pasture applicability and minimal management changes. This makes them uniquely well-suited to extensive systems. Currently long-term (5+ years to commercial), with mitigation potential and productivity impacts unknown. High-risk, high-reward.",
+    projects: [
+      "Antigen discovery and target specificity research",
+      "Antibody efficacy studies in the rumen environment",
+      "Adjuvant and delivery optimization for sustained immune response"
+    ],
+    citations: "Roadmap pp. 49-50",
+    tags: { horizon:["long","agnostic"], risk:["catalyze","moonshot"], pillar:["innovate","any"], system:["pasture","both"], geo:["any"] }
+  },
+  {
+    id: "policy-coalition",
+    title: "Support policy coalitions and regulatory streamlining",
+    pillar: "Support Action",
+    reasoning: "Enteric methane receives only approximately 2% of agricultural climate R&D funding. Regulatory pathways for novel feed additives (and other interventions) can take years and vary by jurisdiction. Policy advocacy that streamlines approval and expands public R&D funding is a force multiplier for every other intervention category. Producer engagement is also routinely underweighted.",
+    projects: [
+      "Fund policy advocacy organizations working on methane regulation streamlining (e.g., EMIT LESS Act, IFEED Act)",
+      "Support producer coalitions that bring farmer voice into policy design",
+      "Underwrite legal and regulatory analyses comparing approval pathways across jurisdictions"
+    ],
+    citations: "Roadmap pp. 28-29",
+    tags: { horizon:["near","long","agnostic"], risk:["derisk","catalyze"], pillar:["policy","any"], system:["pasture","confined","both"], geo:["hic","global","any"] }
+  },
+  {
+    id: "behavioral-research",
+    title: "Invest in behavioral research and consumer messaging",
+    pillar: "Earn Trust",
+    reasoning: "Even effective, scientifically validated technologies can face public rejection (the rbST case is the canonical example, and similar pushback is already emerging on certain feed additives). Behavioral research and aligned messaging across the supply chain de-risks adoption for every other intervention. This is currently underfunded relative to its leverage.",
+    projects: [
+      "Conduct behavioral research on public perceptions of emerging mitigation strategies",
+      "Translate findings into supply-chain communication strategies",
+      "Support industry-wide messaging coordination through bodies like GEMIA"
+    ],
+    citations: "Roadmap pp. 26-27",
+    tags: { horizon:["near","long","agnostic"], risk:["derisk","catalyze"], pillar:["trust","any"], system:["pasture","confined","both"], geo:["hic","global","any"] }
+  },
+  {
+    id: "lmic-deployment",
+    title: "Fund LMIC-focused deployment, extension, and localized solution adaptation",
+    pillar: "Innovate / Support Action",
+    reasoning: "Over 75% of cattle and the majority of emissions are in LMICs, where pasture-based and mixed systems dominate. Most existing solutions and almost all investment target HIC confined systems. Localized adaptation, extension programs, and context-specific deployment in countries like India, Brazil, and Ethiopia is high-leverage but underfunded.",
+    projects: [
+      "Localized strategy development in high-emission LMICs (India, Brazil, Ethiopia)",
+      "Extension programs and producer training for pasture-based intervention adoption",
+      "Region-specific feeding strategies optimized for low-input systems"
+    ],
+    citations: "Roadmap pp. 11, 22, 44",
+    tags: { horizon:["near","agnostic"], risk:["derisk","catalyze"], pillar:["innovate","policy","any"], system:["pasture","both"], geo:["lmic","global","any"] }
+  },
+  {
+    id: "emerging-tech",
+    title: "Underwrite high-risk emerging technologies (phage therapy, microbiome engineering, lytic enzymes)",
+    pillar: "Innovate",
+    reasoning: "These are early-stage, mostly pre-clinical approaches that could be transformative if they work. They are particularly promising for pasture systems where a one-time intervention could establish a stable low-methane microbiome. Limited peer-reviewed data and unclear feasibility mean high failure risk, but this is exactly the kind of bet philanthropy is positioned to make where commercial capital will not.",
+    projects: [
+      "Early-life rumen programming research (microbiome imprinting in young ruminants)",
+      "Phage therapy and lytic enzyme discovery and delivery research",
+      "Microbiome engineering using CRISPR and synthetic biology"
+    ],
+    citations: "Roadmap pp. 51-52",
+    tags: { horizon:["long","agnostic"], risk:["moonshot"], pillar:["innovate","any"], system:["pasture","both"], geo:["any"] }
+  },
+  {
+    id: "carbon-credits",
+    title: "Support carbon market infrastructure for enteric methane credits",
+    pillar: "Incentivize",
+    reasoning: "Most existing feed additives (3-NOP, haloform inhibitors) lack productivity benefits at $100-500 per animal per year, so adoption depends on financial incentives. Carbon market infrastructure (methodology development, MRV systems, registry integration) is the connective tissue between solution availability and farmer adoption. Recent moves (Isometric adding methane methodologies) suggest momentum.",
+    projects: [
+      "Fund methodology development for enteric methane credits across registries",
+      "Support MRV (measurement, reporting, verification) system development",
+      "Pilot supply-chain insetting programs that create credit demand"
+    ],
+    citations: "Roadmap pp. 24, 53",
+    tags: { horizon:["near","agnostic"], risk:["derisk","catalyze"], pillar:["incentivize","any"], system:["pasture","confined","both"], geo:["hic","global","any"] }
+  }
+];
+
+/* =========================================================
+   STATE & MATCHING
+   ========================================================= */
+const state = { horizon:null, risk:null, pillar:null, system:null, geo:null };
+
+function scoreIntervention(intv) {
+  let score = 0;
+  let answered = 0;
+  for (const key of Object.keys(state)) {
+    const userAns = state[key];
+    if (!userAns) continue;
+    answered++;
+    const allowed = intv.tags[key] || ["any"];
+    // Strong match: user answer is in the intervention's allowed list
+    if (allowed.includes(userAns)) score += 2;
+    // Soft match: intervention is "any" for this dimension
+    else if (allowed.includes("any")) score += 1;
+    // Mismatch: 0
+  }
+  // Normalize so partial answers still rank reasonably
+  return answered === 0 ? 0 : score / (answered * 2);
+}
+
+function getRecommendations() {
+  const answered = Object.values(state).filter(Boolean).length;
+  if (answered === 0) return [];
+  const scored = interventions.map(i => ({ ...i, score: scoreIntervention(i) }));
+  scored.sort((a, b) => b.score - a.score);
+  // Return top 3 with score >= 0.5 (i.e. some real match)
+  return scored.filter(s => s.score >= 0.5);
+}
+
+/* =========================================================
+   RENDERING
+   =========================================================  */
+
+function renderResults() {
+  const recs = getRecommendations();
+  const container = document.getElementById('resultsContainer');
+  const countEl = document.getElementById('resultsCount');
+  
+  if (recs.length === 0) {
+    container.innerHTML = '<div class="results-empty">Select a filter to see matched interventions</div>';
+    countEl.textContent = '';
+    document.getElementById('ctaSection').style.display = 'none';
+    return;
+  }
+
+  countEl.textContent = recs.length + ' of ' + interventions.length + ' interventions matched';
+
+  const cards = recs.map((r, i) => `
+    <div class="intervention-card">
+      <div class="meta">${i === 0 ? 'Best match' : 'Match ' + (i+1)} &nbsp;·&nbsp; ${r.pillar}</div>
+      <h4>${r.title}</h4>
+      <p>${r.reasoning.slice(0, 180)}...</p>
+      <button class="card-toggle">Show details</button>
+      <div class="card-details">
+        <div class="card-details-label">Full reasoning</div>
+        <p>${r.reasoning}</p>
+        <div class="card-details-label">Concrete projects</div>
+        <ul class="card-projects">
+          ${r.projects.map(p => `<li>${p}</li>`).join('')}
+        </ul>
+        <div class="card-citation">${r.citations}</div>
+      </div>
+    </div>
+  `).join('');
+
+  container.innerHTML = cards;
+  document.getElementById('ctaSection').style.display = 'block';
+
+  // Wire up expand/collapse toggles
+  container.querySelectorAll('.card-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const details = btn.nextElementSibling;
+      const isOpen = details.classList.contains('show');
+      details.classList.toggle('show');
+      btn.textContent = isOpen ? 'Show details' : 'Hide details';
+    });
+  });
+}
+
+/* =========================================================
+   EVENT WIRING
+   ========================================================= */
+document.querySelectorAll('.pill-group').forEach(group => {
+  const key = group.dataset.q;
+  group.addEventListener('click', e => {
+    if (!e.target.classList.contains('option-pill')) return;
+    const val = e.target.dataset.value;
+    if (state[key] === val) {
+      state[key] = null;
+      e.target.classList.remove('is-selected');
+    } else {
+      state[key] = val;
+      group.querySelectorAll('.option-pill').forEach(p => p.classList.remove('is-selected'));
+      e.target.classList.add('is-selected');
+    }
+    renderResults();
+  });
+});
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+  for (const k of Object.keys(state)) state[k] = null;
+  document.querySelectorAll('.option-pill.is-selected').forEach(b => b.classList.remove('is-selected'));
+  renderResults();
+});
+
+function copyResults() {
+  const recs = getRecommendations();
+  if (!recs.length) return;
+  const text = recs.map((r, i) =>
+    `${i+1}. ${r.title}\n   Pillar: ${r.pillar}\n   ${r.reasoning}\n   ${r.citations}`
+  ).join('\n\n');
+  const btn = document.getElementById('copyResultsBtn');
+  navigator.clipboard.writeText('Spark Enteric Methane Navigator, Matched Interventions\n\n' + text)
+    .then(() => {
+      btn.textContent = 'Copied!';
+      setTimeout(() => { btn.textContent = 'Copy results'; }, 2000);
+    });
+}
+
+
+</script>
+
+</body>
+</html>
